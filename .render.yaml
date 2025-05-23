@@ -8,5 +8,4 @@ services:
       - key: DJANGO_SETTINGS_MODULE
         value: core.settings
       - key: DATABASE_URL
-        value: mysql://u960928938_rootrepartly:Ew_Mhn5Swk6$Ybc@193.203.168.99:3306/u960928938_repartly
-
+        sync: false  # 🔐 Render NO lo gestionará desde este archivo
