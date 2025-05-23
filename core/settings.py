@@ -53,7 +53,7 @@ REST_FRAMEWORK = {
     )
 }
 
-CORS_ALLOWED_ORIGINS = ["*"]
+CORS_ALLOWED_ORIGINS = ["https://repartly.themonument.es"]
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
