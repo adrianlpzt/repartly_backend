@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      margin: 40px;
+      color: #333;
+    }
+
+    .cabecera {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #2c3e50;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+
+    .cabecera img {
+      height: 40px;
+    }
+
+    .datos-usuario {
+      text-align: right;
+      font-size: 11px;
+      color: #555;
+    }
+
+    h2 {
+      color: #2c3e50;
+      margin-top: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0 20px 0;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    .resumen {
+      margin-top: 30px;
+      padding: 15px;
+      background-color: #f9f9f9;
+      border: 1px solid #ccc;
+    }
+
+    .resumen td {
+      padding: 6px 10px;
+    }
+
+    footer {
+      margin-top: 60px;
+      font-size: 10px;
+      color: #777;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cabecera">
+    <img src="{{ logo_path }}" alt="Repartly" style="height: 40px;">
+    <div class="datos-usuario">
+      <strong>{{ usuario.first_name }} {{ usuario.last_name }}</strong><br>
+      {{ usuario.email }}<br>
+      {% if usuario.profile.nif %}NIF: {{ usuario.profile.nif }}<br>{% endif %}
+      Fecha de emisión: {{ fecha_generacion|date:"d/m/Y" }}
+    </div>
+  </div>
+
+  <h2>Factura – {{ mes }}</h2>
+
+  <h3>Entregas por plataforma</h3>
+  <table>
+    <thead><tr><th>Plataforma</th><th>Cantidad</th><th>Total (€)</th></tr></thead>
+    <tbody>
+      {% for plataforma, datos in entregas_por_plataforma %}
+      <tr>
+        <td>{{ plataforma.nombre }}</td>
+        <td>{{ datos.cantidad }}</td>
+        <td>{{ datos.total|floatformat:2 }}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="3">Sin entregas registradas.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h3>Recogidas por plataforma</h3>
+  <table>
+    <thead><tr><th>Plataforma</th><th>Cantidad</th><th>Total (€)</th></tr></thead>
+    <tbody>
+      {% for plataforma, datos in recogidas_por_plataforma %}
+      <tr>
+        <td>{{ plataforma.nombre }}</td>
+        <td>{{ datos.cantidad }}</td>
+        <td>{{ datos.total|floatformat:2 }}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="3">Sin recogidas registradas.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h3>Resumen financiero</h3>
+  <table class="resumen">
+    <tr><td>Subtotal</td><td>{{ subtotal|floatformat:2 }} €</td></tr>
+    <tr><td>IVA (21%)</td><td>{{ iva|floatformat:2 }} €</td></tr>
+    <tr><td>Total con IVA</td><td><strong>{{ total_con_iva|floatformat:2 }} €</strong></td></tr>
+    <tr><td>Beneficio neto</td><td><strong>{{ beneficio|floatformat:2 }} €</strong></td></tr>
+  </table>
+
+  <footer>
+    Factura generada automáticamente por Repartly
+  </footer>
+
+</body>
+</html>
