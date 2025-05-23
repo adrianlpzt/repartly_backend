@@ -17,5 +17,4 @@ urlpatterns = [
     path('me/', views.me_view),
     path('me/update_user/', views.update_user_view),
     path('factura/', views.generar_factura_pdf),
-
 ]
