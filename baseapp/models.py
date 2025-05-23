@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    avatar = models.CharField(max_length=100, default='avatar1.png')  # nombre del archivo
+    avatar = models.CharField(max_length=100, default='avatar1.png')  
     fecha_nacimiento = models.DateField(null=True, blank=True)
     telefono = models.CharField(max_length=20, blank=True)
     notas = models.TextField(blank=True)
