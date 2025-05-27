@@ -20,6 +20,10 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Carga automática del archivo .env correspondiente
+env_file = BASE_DIR / (".env.production" if os.getenv("DJANGO_ENV") == "production" else ".env.local")
+load_dotenv(dotenv_path=env_file)
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -53,7 +57,7 @@ REST_FRAMEWORK = {
     )
 }
 
-CORS_ALLOWED_ORIGINS = ["https://repartly.themonument.es"]
+CORS_ALLOWED_ORIGINS = ["https://repartly.themonument.es", "http://localhost:5173", "https://repartly.app"]
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
