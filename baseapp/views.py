@@ -1,11 +1,10 @@
 # baseapp/views.py
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, status
 from .models import Platform, Entrega, Recogida, Gasto, Profile
-from .serializers import PlatformSerializer, EntregaSerializer, RecogidaSerializer, GastoSerializer, ProfileSerializer
+from .serializers import UserSerializer, UserRegisterSerializer, PlatformSerializer, EntregaSerializer, RecogidaSerializer, GastoSerializer, ProfileSerializer
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from .serializers import UserSerializer
 from weasyprint import HTML
 from collections import defaultdict
 import os
@@ -159,3 +158,11 @@ def generar_factura_pdf(request):
     response = HttpResponse(pdf, content_type='application/pdf')
     response['Content-Disposition'] = f'attachment; filename="repartly_factura_{mes}.pdf"'
     return response
+
+@api_view(['POST'])
+def register_user(request):
+    serializer = UserRegisterSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({'detail': 'Usuario registrado correctamente. En espera de activación.'}, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
