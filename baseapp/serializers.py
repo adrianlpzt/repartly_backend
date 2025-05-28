@@ -43,9 +43,18 @@ class UserRegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     password2 = serializers.CharField(write_only=True)
 
+    telefono = serializers.CharField(write_only=True, required=False)
+    nif = serializers.CharField(write_only=True, required=False)
+    fecha_nacimiento = serializers.DateField(write_only=True, required=False)
+    avatar = serializers.ImageField(write_only=True, required=False)
+
     class Meta:
         model = User
-        fields = ['username', 'email', 'password', 'password2', 'first_name', 'last_name']
+        fields = [
+            'username', 'email', 'password', 'password2',
+            'first_name', 'last_name',
+            'telefono', 'nif', 'fecha_nacimiento', 'avatar'
+        ]
 
     def validate(self, data):
         if data['password'] != data['password2']:
@@ -54,6 +63,13 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         validated_data.pop('password2')
+
+        telefono = validated_data.pop('telefono', '')
+        nif = validated_data.pop('nif', '')
+        fecha_nacimiento = validated_data.pop('fecha_nacimiento', None)
+        avatar = validated_data.pop('avatar', None)
+
+        # Crear usuario (inactivo)
         user = User.objects.create_user(
             username=validated_data['username'],
             email=validated_data['email'],
@@ -61,10 +77,17 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             first_name=validated_data.get('first_name', ''),
             last_name=validated_data.get('last_name', '')
         )
-        user.is_active = False  # 🔒 Usuario creado como inactivo
+        user.is_active = False
         user.save()
 
-        # Crear perfil automáticamente
-        Profile.objects.create(user=user)
+        # Crear perfil asociado
+        Profile.objects.create(
+            user=user,
+            telefono=telefono,
+            nif=nif,
+            fecha_nacimiento=fecha_nacimiento,
+            avatar=avatar
+        )
 
         return user
+
