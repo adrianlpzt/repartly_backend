@@ -69,7 +69,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         fecha_nacimiento = validated_data.pop('fecha_nacimiento', None)
         avatar = validated_data.pop('avatar', None)
 
-        # Crear usuario (inactivo)
+        # Crear usuario
         user = User.objects.create_user(
             username=validated_data['username'],
             email=validated_data['email'],
@@ -80,13 +80,13 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         user.is_active = False
         user.save()
 
-        # Crear perfil asociado
+        # Crear perfil SOLO con campos que existen
         Profile.objects.create(
             user=user,
-            telefono=telefono,
-            nif=nif,
+            telefono=telefono or '',
+            nif=nif or '',
             fecha_nacimiento=fecha_nacimiento,
-            avatar=avatar
+            avatar=avatar if avatar else None
         )
 
         return user
