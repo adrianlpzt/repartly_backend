@@ -67,7 +67,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         telefono = validated_data.pop('telefono', '')
         nif = validated_data.pop('nif', '')
         fecha_nacimiento = validated_data.pop('fecha_nacimiento', None)
-        avatar = validated_data.pop('avatar', None)
+        avatar = validated_data.pop('avatar', 'avatar1.png')
 
         # Crear usuario
         user = User.objects.create_user(
@@ -86,7 +86,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             telefono=telefono or '',
             nif=nif or '',
             fecha_nacimiento=fecha_nacimiento,
-            avatar='/src/assets/avatar1.png'
+            avatar = avatar or 'avatar1.png'
         )
 
         return user
