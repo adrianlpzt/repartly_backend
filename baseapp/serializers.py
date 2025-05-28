@@ -86,7 +86,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             telefono=telefono or '',
             nif=nif or '',
             fecha_nacimiento=fecha_nacimiento,
-            avatar=avatar if avatar else None
+            avatar='/src/assets/avatar1.png'
         )
 
         return user
