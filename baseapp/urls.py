@@ -19,5 +19,5 @@ urlpatterns = [
     path('me/update_user/', views.update_user_view),
     path('factura/', views.generar_factura_pdf),
     path('register/', register_user, name='register'),
-    path('api/activate_user/<int:pk>/', activate_user_view, name='activate_user'),
+    path('activate_user/<int:pk>/', activate_user_view, name='activate_user'),
 ]
