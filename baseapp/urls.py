@@ -11,7 +11,7 @@ router.register(r'entregas', EntregaViewSet, basename='entregas')
 router.register(r'recogidas', RecogidaViewSet, basename='recogidas')
 router.register(r'gastos', GastoViewSet, basename='gastos')
 router.register(r'perfil', ProfileViewSet, basename='perfil')
-router.register(r'api/users', UserViewSet, basename='user')
+router.register(r'users', UserViewSet, basename='user')
 
 urlpatterns = [
     path('', include(router.urls)),
