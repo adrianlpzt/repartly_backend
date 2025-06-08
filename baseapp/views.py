@@ -5,6 +5,7 @@ from .serializers import UserSerializer, UserRegisterSerializer, PlatformSeriali
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.serializers import ModelSerializer
 from weasyprint import HTML
 from collections import defaultdict
 import os
@@ -13,6 +14,8 @@ from django.template.loader import render_to_string
 from django.http import HttpResponse
 from django.conf import settings
 from decimal import Decimal
+from django.contrib.auth.models import User
+from .permissions import IsRepartlyAdmin
 
 
 
@@ -66,6 +69,16 @@ class ProfileViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return Profile.objects.filter(user=self.request.user)
+    
+class UserListSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'is_active']
+
+class UserViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserListSerializer
+    permission_classes = [IsAuthenticated, IsRepartlyAdmin]
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -166,3 +179,14 @@ def register_user(request):
         serializer.save()
         return Response({'detail': 'Usuario registrado correctamente. En espera de activación.'}, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated, IsRepartlyAdmin])
+def activate_user_view(request, pk):
+    try:
+        user = User.objects.get(pk=pk)
+        user.is_active = not user.is_active
+        user.save()
+        return Response({'status': 'success', 'is_active': user.is_active}, status=status.HTTP_200_OK)
+    except User.DoesNotExist:
+        return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
