@@ -80,6 +80,18 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = UserListSerializer
     permission_classes = [IsAuthenticated, IsRepartlyAdmin]
 
+    def list(self, request, *args, **kwargs):
+        print("🚀 DEBUG UserViewSet")
+        print("user:", request.user)
+        print("user.is_authenticated:", request.user.is_authenticated)
+        try:
+            print("user.profile.is_admin_panel:", request.user.profile.is_admin_panel)
+        except Exception as e:
+            print("ERROR accessing profile:", str(e))
+        return super().list(request, *args, **kwargs)
+
+    
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def me_view(request):
