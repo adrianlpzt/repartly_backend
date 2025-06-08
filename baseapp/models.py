@@ -10,6 +10,8 @@ class Profile(models.Model):
     is_premium = models.BooleanField(default=False)
     fecha_registro = models.DateTimeField(auto_now_add=True)
     nif = models.CharField(max_length=20, blank=True)
+    is_admin_panel = models.BooleanField(default=False)
+
 
 
     def __str__(self):
