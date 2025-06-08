@@ -13,7 +13,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ['id', 'user', 'avatar', 'fecha_nacimiento', 'telefono', 'notas', 'is_premium', 'fecha_registro', 'nif']
+        fields = '__all__'
 
 class PlatformSerializer(serializers.ModelSerializer):
     class Meta:
