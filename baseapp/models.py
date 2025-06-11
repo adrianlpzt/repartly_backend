@@ -32,7 +32,7 @@ class Entrega(models.Model):
     cantidad = models.PositiveIntegerField()
     fecha = models.DateField()
     observaciones = models.TextField(blank=True, null=True)
-    total = models.DecimalField(max_digits=7, decimal_places=2)
+    total = models.DecimalField(max_digits=9, decimal_places=2)
 
     def __str__(self):
         return f"Entrega de {self.cantidad} en {self.plataforma.nombre} - {self.user.username}"
@@ -43,7 +43,7 @@ class Recogida(models.Model):
     cantidad = models.PositiveIntegerField()
     fecha = models.DateField()
     observaciones = models.TextField(blank=True, null=True)
-    total = models.DecimalField(max_digits=7, decimal_places=2)
+    total = models.DecimalField(max_digits=9, decimal_places=2)
 
     def __str__(self):
         return f"Recogida de {self.cantidad} en {self.plataforma.nombre} - {self.user.username}"
