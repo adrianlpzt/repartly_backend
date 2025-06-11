@@ -149,12 +149,11 @@ def generar_factura_pdf(request):
     # Totales y cálculo de IVA
     total_entregas = sum(Decimal(e.total) for e in entregas)
     total_recogidas = sum(Decimal(r.total) for r in recogidas)
-    total_gastos = sum(Decimal(g.cantidad) for g in gastos)
 
     subtotal = total_entregas + total_recogidas
     iva = subtotal * Decimal('0.21')
     total_con_iva = subtotal + iva
-    beneficio = subtotal - total_gastos
+    beneficio = subtotal 
 
     # Ruta del logo Repartly
     logo_path = os.path.join(settings.BASE_DIR, 'baseapp', 'static', 'images', 'repartly-logo.png')
@@ -167,7 +166,6 @@ def generar_factura_pdf(request):
         'recogidas_por_plataforma': recogidas_por_plataforma,
         'total_entregas': total_entregas,
         'total_recogidas': total_recogidas,
-        'total_gastos': total_gastos,
         'subtotal': subtotal,
         'iva': iva,
         'total_con_iva': total_con_iva,
